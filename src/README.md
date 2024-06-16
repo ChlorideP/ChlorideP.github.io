@@ -7,7 +7,7 @@ heroImage: /beibei.png
 heroText: 氯喵实验室
 heroFullScreen: true
 bgImage: /54058338_p0.jpg
-tagline: 招待不周，非常抱歉。参观引导姑且就交给「我」吧。
+tagline: 这里是我的「车间」、「作坊」，以及创作的「乐土」。欢迎你的来访。
 projects:
   - icon: project
     name: Wland Parody Filter
@@ -17,7 +17,7 @@ projects:
   - icon: book
     name: 红警 2 触发组件逻辑原理
     desc: 简述触发和局部变量在「逻辑」层面如何起作用。
-    link: /posts/cherry.html
+    link: /archives/RA2/TriggerLogics.html
 
   # - icon: link
   #   name: 链接名称
@@ -49,7 +49,7 @@ projects:
   #   desc: 自定义详细介绍
   #   link: https://你的自定义链接
 
-footer: 「我」的小作坊
+footer: Hongyan Lin 的实验室
 ---
 
 Powered by [VuePress Theme Hope](https://theme-hope.vuejs.press/zh/),  
