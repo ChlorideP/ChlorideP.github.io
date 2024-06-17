@@ -12,7 +12,7 @@ export default hopeTheme({
 
   iconAssets: "fontawesome-with-brands",
 
-  logo: "/beibei.png",
+  logo: "/beibei.webp",
 
   repo: "ChlorideP/chloridep.github.io",
 
@@ -25,7 +25,7 @@ export default hopeTheme({
   sidebar,
 
   // 页脚
-  footer: "默认页脚",
+  footer: "ChlorideP 的实验室",
   displayFooter: true,
 
   // 博客相关

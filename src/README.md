@@ -2,11 +2,11 @@
 home: true
 layout: BlogHome
 icon: home
-title: 前台大厅
-heroImage: /beibei.png
+title: 前台展厅
+heroImage: /beibei.webp
 heroText: 氯喵实验室
 heroFullScreen: true
-bgImage: /54058338_p0.jpg
+bgImage: /54058338_p0.webp
 tagline: 这里是我的「车间」、「作坊」，以及创作的「乐土」。欢迎你的来访。
 projects:
   - icon: project
@@ -49,7 +49,7 @@ projects:
   #   desc: 自定义详细介绍
   #   link: https://你的自定义链接
 
-footer: Hongyan Lin 的实验室
+footer: 氯喵的实验室
 ---
 
 Powered by [VuePress Theme Hope](https://theme-hope.vuejs.press/zh/),  

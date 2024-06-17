@@ -6,6 +6,7 @@ tag:
   - 地图编辑
   - 触发
   - 局部变量
+star: true
 ---
 
 # 红警 2 地图触发组件的逻辑原理
@@ -185,7 +186,7 @@ int Braindead(void)  {  // 脑死
 
 注意到触发中有这么一个选项：「重复类型」。
 
-![FA2 触发编辑器属性页](fa2_trigger_ui.png)
+![FA2 触发编辑器属性页](fa2_trigger_ui.webp)
 
 其中重复类型有以下三种取值（目前没有第四种！）
 
@@ -244,11 +245,11 @@ if (ObjectSelected(pObject_C)) {
 ```
 接下来就是选择了。既然同一帧内不可能点两个建筑，那么我们完全可以趁你改某一个建筑所属的时候，把其他改所属的触发给 ban 掉。
 （下面的代码为了演示方便，改用 Python 写法）
-```c
-def selection_getA():   // 只是一条触发声明
+```python
+def selection_getA():   # 只是一条触发声明
   if ObjectSelected(pA):
     ChangeOwner(pA, houseID)
-    del selection_getB  // 行为 12 - 摧毁触发事件
+    del selection_getB  # 行为 12 - 摧毁触发事件
     del selection_getC
   return True
 
@@ -416,7 +417,7 @@ if (cheers == 1) {
 
 与上述「或」运算的实现不同，触发的「非」运算仍需要借助原条件。
 
-举个例子，游戏里基洛夫飞艇飞得比较慢，我们就假定它要送~~外卖（大嘘）~~炸弹吧。要求指定时间内摧毁目标。
+举个例子，游戏里基洛夫飞艇飞得比较慢，我们就假定它要送~~外卖（大嘘）~~ 炸弹吧。要求指定时间内摧毁目标。
 那么对于基洛夫要判断两件事：
 
 - 计时器没超时（流逝时间小于指定值）
@@ -432,21 +433,27 @@ if (mission_in_time == 1 and ObjectDestroyed(target)) {
   // blabla
 }
 ```
-这样一来，通过计时和目标双指标考核的基洛夫空艇便可以输出全靠砸力（bushi）。
+这样一来，触发通过判断原条件「已经过了指定时间」成立，反向推出「仍在指定时间内」这一条件不成立，实现了对「超时」的判断。  
+总之，我们可以借助局部变量的`bool`开关特性，将判断「条件的否定」分解为「判断条件」和「给条件取反」两个步骤，
+并用局部变量将「条件的否定」带给其他触发，间接完成条件的「非」运算。
 
-### 4.2 通过脚本语言和 imgui 等方式对游戏作更全面的干预
+### 4.2 通过脚本语言等方式对游戏作更全面的干预
 
 这一部分恕我没有办法作具体的展开，圈子里已经有一些大佬这么探索了。简而言之，可以嵌入调用`Lua`脚本的触发，以此为接口提供外部操作的可能；
 也可以用别的方法实现 terminal 对游戏内对象的干预，有了 terminal 了自然便可以考虑 Batching，也就是多条命令编写的 Scripts。
 
 ## 结论
 
-综上所述，红警 2 的触发在逻辑层面上类似`if`单分支语句的设计，支持顺序、选择、循环三种结构，可以实现大部分任务所需的线性叙事。然而其在逻辑运算上又有所欠缺，导致要追求完整的逻辑判断要通过局部变量绕路实现，对于地图师的逻辑思维能力是一大考验。并且，随着时代变迁，触发的客制化需求也与日俱增，人们已经不再满足于扩展平台炒的大锅饭，开始转向脚本式的外部干预。但截至 24.6.17 尚没有公开、可行的相应方案。红警 2 对剧情表现的探索仍有很长的路要走。
+综上所述，红警 2 的触发在逻辑层面上类似`if`单分支语句的设计，支持顺序、选择、循环三种结构，可以实现大部分任务所需的线性叙事。然而其在逻辑运算上又有所欠缺，导致要追求完整的逻辑判断要通过局部变量绕路实现，对于地图师的逻辑思维能力是一大考验。
+
+并且，随着时代变迁，触发的客制化需求也与日俱增，人们已经不再满足于扩展平台炒的大锅饭，开始转向脚本式的外部干预。但截至 24.6.17 尚没有公开、可行的相应方案。
+
+综上所述，红警 2 对剧情表现的探索仍有很长的路要走。
 
 ## 参考文献
 
-1. ModEnc. `Triggers [EB/OL]`, [https://modenc.renegadeprojects.com/Triggers](https://modenc.renegadeprojects.com/Triggers), 1.31.2024, 6.17.2024
-2. ModEnc. `VariableNames [EB/OL]`, [https://modenc.renegadeprojects.com/VariableNames](https://modenc.renegadeprojects.com/VariableNames), 5.16.2024, 6.17.2024
+1. ModEnc. `Triggers [EB/OL]`, [https://modenc.renegadeprojects.com/Triggers](https://modenc.renegadeprojects.com/Triggers), 1.31.2024, 6.17.2024.
+2. ModEnc. `VariableNames [EB/OL]`, [https://modenc.renegadeprojects.com/VariableNames](https://modenc.renegadeprojects.com/VariableNames), 5.16.2024, 6.17.2024.
 3. [RN Studio](https://github.com/revengenowstudio). `Map Tutorial [EB/OL]`, [https://github.com/revengenowstudio/map_tutorial](https://github.com/revengenowstudio/map_tutorial), 4.29.2024, 5.6.2024.
 
 > [!NOTE]
