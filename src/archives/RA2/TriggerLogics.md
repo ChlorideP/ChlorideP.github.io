@@ -28,9 +28,8 @@ tag:
 
 1. [RN Studio](https://github.com/revengenowstudio). `Map Tutorial[EB/OL]`, https://github.com/revengenowstudio/map_tutorial, 4.29.2024, 5.6.2024.
 
-::: note
-上述参考文献大致遵循 GB/T 7714 规范。如有误还请在 Issues 或 Pull Requests 中指出。
-:::
+> [!NOTE]
+> 上述参考文献大致遵循 GB/T 7714 规范。如有误还请在 Issues 或 Pull Requests 中指出。
 
 ## 致谢
 
