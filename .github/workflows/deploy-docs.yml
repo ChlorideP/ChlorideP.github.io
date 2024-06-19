@@ -5,6 +5,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - .github/**
+      - src/**
+      - public/**
+      - package.json
 
 permissions:
   contents: write
