@@ -4,9 +4,9 @@ export default navbar([
   "/",
   "/archives/",
   "/notes/",
-  // {
-  //   text: "友链",
-  //   icon: "friend",
-  //   link: "/friends/",
-  // },
+  {
+    text: "友链",
+    icon: "heart",
+    link: "/friends/",
+  },
 ]);

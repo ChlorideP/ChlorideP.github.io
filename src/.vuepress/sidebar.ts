@@ -16,11 +16,6 @@ export default sidebar({
       children: "structure",
     },
     // "intro",
-    // {
-    //   text: "友链",
-    //   icon: "friend",
-    //   link: "friends/",
-    //   prefix: "friends/",
-    // },
+    "friends/"
   ],
 });

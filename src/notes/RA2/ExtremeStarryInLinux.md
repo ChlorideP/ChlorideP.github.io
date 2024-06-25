@@ -102,7 +102,7 @@ flatpak run com.usebottles.bottles
 
 - 「添加快捷方式」功能：可以为客户端启动器设置快捷入口，这样就不需要每次都找半天了。  
 
-> [!note]
+> [!tip]
 > 在「选择可执行文件」对话框中，若找不到 exe，请在「过滤」那里改为`Supported Executables`。
 
 > [!important]
