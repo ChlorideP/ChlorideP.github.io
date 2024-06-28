@@ -10,7 +10,7 @@ tag:
 star: true
 ---
 
-# Arch Linux 个人配（折）置（腾）流程
+# Arch Linux 个人安（折）装（腾）流程
 <!-- https://www.glowmem.com/archives/archlinux-note -->
 <!-- https://arch.icekylin.online/guide/-->
 
@@ -22,6 +22,7 @@ star: true
 > [!important]
 > 由于 Arch 更迭速度比较快，下面的参考链接以及这篇笔记本身的内容可能随时失效。  
 > 在安装、使用过程中遇到的，这里没有提及的问题，还请自行 Google、Bing 或 Baidu。
+> > 话虽如此，我还是会尽量保持本文的更新；如有需要，也可以[提 Issues](https://github.com/ChlorideP/ChlorideP.github.io/issues)。
 >
 > 如果你觉得 Arch 滚动更新很累、玩不太明白，不妨还是先上手`Pop!_OS`或者`Ubuntu`。
 >
@@ -191,7 +192,15 @@ sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-medi
 ::: note KDE 6 vs KDE 5？
 目前最新版本为 KDE 6。但律回指南发布于 23 年 11 月，介绍的是 KDE 5。
 
-话虽如此，倒也不必惊慌。`pacman`以及`yay` `paru`之流均**默认安装最新版**，律回指南[第五章「桌面环境安装」](https://www.glowmem.com/archives/archlinux-note#toc-head-6)中**安装 KDE 5 的步骤仍可用于安装 KDE 6**。
+话虽如此，倒也不必惊慌。`pacman`以及`yay` `paru`之流均**默认安装最新版**，以下**安装 KDE 5 的步骤仍可用于安装 KDE 6**：
+```bash
+# 分别安装 xorg 套件、sddm 登录管理器、KDE 桌面环境，以及配套软件
+sudo pacman -S xorg
+sudo pacman -S plasma sddm konsole dolphin kate okular spectacle partitionmanager ark filelight gwenview
+# 启用 sddm 服务，重启进 SDDM 用户登录
+sudo systemctl enable sddm
+sudo reboot
+```
 :::
 
 ### 5.1 关于 Wayland 和 X11
@@ -228,7 +237,7 @@ AMD 或 NVIDIA 显卡可参见律回指南[6.4 小节「显卡驱动安装」](h
 
 #### 5.2.2 额外中文字体和输入法
 
-律回提到的中文字体包更适合作为 fallback（备选）字体，日常使用只能说勉强能看（但还是建议装上）；
+律回提到的中文字体包更适合作为 fallback（备选）字体，日常使用只能说勉强能看（但也建议装上）；
 Miku 版指南则建议安装文泉驿字体`wqy-zenhei`^extra^，但我个人觉得这个字体**笔划太细**。
 ~~反正用文泉驿我是分不清楚「喵」和「瞄」两个`miao1`字。~~  
 我目前在用小米那套`misans`^aur^，想「遥遥领先」也可以试试鸿蒙字体`ttf-harmonyos-sans`^aur^。
@@ -240,9 +249,10 @@ tar (child): data.tar.gz: Cannot open: No such file or directory
 ```
 Miku 指南的[输入法介绍](https://arch.icekylin.online/guide/rookie/desktop-env-and-app.html#_10-%E5%AE%89%E8%A3%85%E8%BE%93%E5%85%A5%E6%B3%95)则推荐直接安装`fcitx5`。
 
-::: warning 可能的包版本冲突
+::: warning 可能的版本冲突
 若先前配置搜狗拼音失败，你需要排查并移除已经安装的 Fcitx 4 组件，它与`fcitx5`冲突：
 ```bash
+# 查询本地（local）已安装的软件库
 sudo pacman -Qs fcitx
 # 逐个移除，以 fcitx 为例
 sudo pacman -R fcitx
@@ -250,66 +260,7 @@ sudo pacman -R fcitx
 不用递归移除`-Rs`的原因是，递归可能移除掉你不希望干掉的包依赖。
 :::
 
-#### 5.2.3 系统美化
+---
 
-> [!warning]
-> 律回摘引的 KDE 美化方案绝大部分已经过时。比如`latte-dock`已明显无法用于 KDE 6。
-
-但无论何种桌面环境、何种发行版、何种系统（哪怕 Windows），这两条建议想必都是适用的：
-
-- 尽量少做美化。特别是很 hack 的美化要少搞，会不稳定；
-- 风格统一是「美观」的必要条件。
-
-::: details 【仅供参考】我自己的美化方案
-只能说聊胜于无。
-
-- 全局主题：`Nordic-darker`
-  - 控件样式：`Kvantum`内安装的`Nordic-darker`
-  - Plasma 外观：`Nordic-darker`
-  - 图标：`Breeze`（默认）
-  - 欢迎屏幕、登录屏幕可手动选`Nordic`系列。
-
-- 仿 Mac
-  - Dock 栏即原本的任务栏，只保留「图标任务管理器」组件。
-    - 位于底部、居中、适宜宽度
-    - 取消悬浮、避开窗口
-  - Finder 栏即「应用程序菜单栏」（可在「编辑模式—添加面板」处找到）
-    - 位于顶部、居中、填满宽度
-    - 取消悬浮、常驻显示
-    - 自左到右依次为：
-      - 应用程序启动器（没错就是开始菜单）
-      - 窗口列表
-      - 全局菜单（默认提供）
-      - 「面板间距」留白
-      - 数字时钟
-        - 日期保持在时间旁边，而不是上下两行
-        - 字号略小于菜单栏高度，凭感觉捏
-      - 「面板间距」留白
-      - 系统托盘
-:::
-
-## 六、杂七杂八
-至此，Arch 整装待发，可以作为你日常使用的 Linux 发行版了。但日常使用软件也免不了踩坑= =
-
-::: info LinuxQQ 4:3.2.9_24568-1 启动后界面空白
-经 Flysoft 排查，系`libssh2`未能加载。解决方案也很简单，在终端预加载之：
-```bash
-env LD_PRELOAD="/usr/lib/libssh2.so" linuxqq
-```
-:::
-
-::: details VSCode 提交签名
-大体上跟着 [Commit Signing - VSCode Wiki](https://github.com/microsoft/vscode/wiki/Commit-Signing) 就可以了。唯一需要留意的是`pinentry`。
-
-VSCode 的主侧栏「源代码管理」页提交时并不会走终端，也就莫得 pinentry 的 CUI；莫得 pinentry 输密码验证，提交就签不了名。
-虽然有人好像搞了个`pinentry-extension`出来，但 6 月初我去看的时候它连说明书都莫得，也没有上架，那用集贸。
-
-所以我选择编辑`~/.gnupg/gpg-agent.conf`：
-```properties
-default-cache-ttl 28800
-pinentry-program /usr/bin/pinentry-qt
-```
-保存后重启`gpg-agent`：`gpg-connect-agent reloadagent /bye`。
-
-虽然这么搞反倒在 SSH 上用不了了，但我平时还是用 KDE 图形界面比较多。
-:::
+至此，Arch 的安装告一段落，你可以像捣腾 Windows 那样玩转 Arch 了。  
+日常使用的一些注意事项我会贴在下一篇[「配置指南」](ArchLinuxConfig.md)中，就不在这里占用太多篇幅了。
