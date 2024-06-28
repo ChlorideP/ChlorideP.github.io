@@ -17,7 +17,7 @@ export default hopeTheme(
 
     repo: "ChlorideP/chloridep.github.io",
 
-    docsDir: "docs",
+    docsDir: "src",
 
     // 导航栏
     navbar,
