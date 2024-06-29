@@ -154,5 +154,149 @@ mov eax, ebx    # 把 EBX 寄存器里的值直接传给 EAX
 mov eax, [ebx]  # 把 EBX 里的内存地址取出来，再读那个内存地址，把数据传进 EAX。
 ```
 
-## 初见 IDA
+## 初探 IDA
 
+### 案例
+
+FA2 的「国家」和「所属」是靠后缀区分的，国家直接取自 Rules*.ini，所属则是在国家基础上添加了` House`后缀，比如国家`YuriCountry`和所属`YuriCountry House`。  
+默认在触发编辑器属性页里，触发所属方会截断空格，只许你选「国家」。现在要求你把这个碍事的截断给干掉，方便我们实现多人合作地图的「所属」关联。
+
+### 逆向分析
+
+::: details 有源码做题就是快
+注意到`TriggerOptionsDlg.cpp`里关于「更改所属方」的方法定义：
+```cpp {14,}
+void CTriggerOptionsDlg::OnEditchangeHouse()
+{
+    // ... 前面忘了
+
+	CString newHouse;
+	m_House.GetWindowText(newHouse);  // 实际是 GetWindowTextA
+
+	// FA2 读完所属会用 CSF 本地化这些窗口控件的所属名字（但是非常鸡肋）
+    // 这一步又把本地化的所属翻译回 INI 的所属 ID
+	newHouse=TranslateHouse(newHouse);
+
+	newHouse.TrimLeft();
+    // 如果你英语好一点，空格 => space，你便已经找到要淦的位置了：
+	TruncSpace(newHouse);
+
+    // ... 后面忘了
+}
+```
+右键对`TruncSpace`转到定义，可以在`functions.cpp`发现：
+```cpp
+void TruncSpace(CString& str)
+{
+	str.TrimLeft();
+	str.TrimRight();
+	if(str.Find(" ")>=0) str.Delete(str.Find(" "), str.GetLength()-str.Find(" "));
+}
+```
+于是确定我们要干掉的就是这个`TruncSpace`。
+
+当然了前面说过，书伸还没搬运完 FA2sp 的功能修复，改源码暂时没什么意义。
+:::
+
+> 开始之前赞美一下书伸，书门！（  
+> 没有书伸的成果，我不可能很快找出待修改函数的虚拟地址。
+
+在 32 位 IDA 里新建一个反编译项目，打开 FA2 的主程序。我们案例要淦的函（方）数（法）位于`0x501D90`，在菜单栏`Jump`里找到`Jump to address`，把这个地址复制进去确认。  
+默认它会切换为 Graph View，你需要右键改为 Text View：
+
+![IDA 默认的图表模式](ida_graph_view.webp)
+
+往下翻到`.text:00501E58`，注意到`GetWindowTextA`这个 WinAPI。如果你翻看了上面的源码，就会发现我们离目标不远了。  
+
+> [!tip]
+> 引用的 API，比如说 WinAPI 或者 CString 类的 API，地址通常都比较靠后。
+> 在 Text View 里双击那个`GetWindowTextA`，可以发现地址跑到`0x553134`去力（瞄完可以用工具栏上的左箭头返回我们正文看的位置）。
+> 所以接下来不要认错函数调用咯。
+
+借着上面的提示，同屏`GetWindowTextA`后面只剩两个怀疑对象：`sub_43C3C0`和`sub_43EA90`。
+
+![找出附近的函数调用](ida_find_calls.webp)
+
+接下来看看这两个嫌疑函数的特征。直接菜单栏`View`，`Open subviews`，`Generate pseudocode (F5)`生成反汇编代码，于是我们得到案例方法的 C 式伪代码：
+
+![辨认嫌疑伸](ida_recog_func_calls.webp)
+
+由上面的源码可得，截断空格的函数`TruncSpace`只有一个参数，至此我们确定是`sub_43EA90`背锅。
+
+## 编写 Hook
+
+目前我已知两种 Hook 用法，我们这里写的 Hook 是第二种用途：
+
+- 在原函数里新增内容实现扩展（`return 0`）
+- 绕过（或覆盖）原函数的执行流程（`return`到目标地址）
+
+### 背景芝士：Syringe
+
+`Syringe.h`提供了定义 Hook 的宏：
+```cpp
+#define EXPORT_FUNC(name) extern "C" __declspec(dllexport) DWORD __cdecl name (REGISTERS *R)
+
+#define DEFINE_HOOK(hook, funcname, size) \
+declhook(hook, funcname, size) \
+EXPORT_FUNC(funcname)
+```
+
+更详细的介绍可以翻 Zero Fanker 的 Ares Wiki。这里只需要知道，写 Hook 靠`DEFINE_HOOK`准没错。  
+然后解释一下这个宏要补的三个参数：
+
+- `hook`：即你要灌注（覆盖）的地址。
+
+> 毕竟你外部定义的 Hook 不可能凭空插入原程序里，肯定需要遮掉原有的一部分指令机器码，才有机会跳转到你的 Hook。
+
+- `funcname`：即你的 Hook 名字。
+
+> [!warning]
+> 虽然 Hook 名字实际上就是 DLL 导出的函数名字，但并不推荐随性的命名。最好还是讲清楚你淦的原函数叫什么，或者你写这个 Hook 要淦什么。
+
+- `size`：即 Hook 覆盖多少字节的原函数指令码（bixv >= 5B）
+
+::: info 简单提一嘴 Syringe 如何「灌注」Hook：
+完整版可以参考 Thomas 写的[高阶知识：Syringe 的工作原理](https://gitee.com/Zero_Fanker/Ares/wikis/%E9%AB%98%E9%98%B6%E7%9F%A5%E8%AF%86/Syringe%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)。
+
+浓缩版就是，向`hook`的地址那里写入`jmp`无条件跳转指令。由于`jmp`指令码本身占 1B，后面跟的虚拟地址总是占 4B，故`size`至少得是 5。
+那倘若要覆盖超过 5B 的机器代码呢？答案是多余部分用`nop`（空指令，什么也不做）填充。
+
+![西瓜猫猫头](https://imgs.aixifan.com/content/2020_7_22/1.5954261313865685E9.gif =150x150)
+:::
+
+### 注意事项
+
+我们这里针对的是函数调用，需要注意 C++ 的函数执行完成后**会触发栈区局部变量的析构函数**（通常是空间回收），因此并不建议把传参的汇编指令也给覆盖掉。
+
+就这个例子而言，只需覆盖`call`指令：
+
+> [!tip]
+> 在 IDA 选项（`Options` > `General`）里，右上角勾选`Stack Pointer`，把`Number of opcode bytes`改为 8，确认即可看到机器码视图。  
+> 然后你就会发现`call`指令刚好 5 个字节。
+>
+> ![call 指令的机器码](ida_call_opcode.webp)
+
+### 实战
+
+> 都有现成项目 FA2sp 了，你不会想着要白手起家吧？
+
+在 FA2sp 项目里依次打开`FA2sp\Ext\CTriggerOption`，在`Hooks.cpp`里添一个 Hook：
+```cpp
+DEFINE_HOOK(501EAD, CTriggerOption_OnCBHouseChanged, 5)
+{
+    return 0x501EB2;  // 这里什么都不用做，我们只是跳过 FA2「截断空格」那一步而已。
+}
+```
+由于`declhook`宏设置 Hook 位置时已经标了`0x`（可以在 Visual Studio 里把鼠标移到宏上面预览展开的代码），
+这里`DEFINE_HOOK`后面设置的地址就不需要再补`0x`了。
+
+## 补充
+
+### REGISTERS 寄存器类
+在上面的「背景芝士」中，注意到导出的 Hook 函数只有一个`REGISTERS`类的指针参数 R。  
+有时我们会需要获取原函数的实参、局部变量等信息，并加以修改，这时就要靠 R 指针获取了：
+
+[进阶知识：Hook 函数的用法](https://gitee.com/Zero_Fanker/Ares/wikis/%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/HOOK%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95)
+
+具体的例子还要结合已有的`idb`逆向成果自行意会。虽然函数调用的基本原理在计组那一块已有涉及，
+但一个函数叫什么名字、里面什么寄存器对应什么变量，这些都是前辈们自行逆向出来的结论。对此，咱还是保留点最起码的尊重罢。
