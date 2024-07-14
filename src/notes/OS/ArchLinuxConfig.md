@@ -10,7 +10,7 @@ star: true
 
 # Arch Linux 个人配（调）置（教）指南
 
-书接上回，指南写着写着发现能聊的点子还挺多的。这一篇就主打日常使用了。  
+[书接上回](ArchInstall.md)，指南写着写着发现能聊的点子还挺多的。这一篇就主打日常使用了。  
 仍然与上篇一样，我默认讨论的是 KDE 桌面环境。
 
 ## 系统美化
@@ -165,24 +165,11 @@ funWithParam 1 2 3 4 5 6 7 8 9 34 73
 ```
 :::
 
-<!-- ## Wine
-Wine 这东西那确实讲起来好多好多。我也姑且为[游玩红警 2 模组「星辰之光」](../RA2/ExtremeStarryInLinux.md)的玩家写了一篇。  
+## 运行 Windows 程序
+
+说到`.exe`，想必你肯定知道 Wine。当然，Steam 则另外用 Proton。它们都是为了在 Linux 系统里「兼容」Windows API 而生的兼容层。  
+而说起 Wine，那确实能讲好几个夜晚，我也差不多摸索了半个月。毕竟我是搞红警 2 mod 出身的嘛，
+姑且也为[游玩红警 2 模组「星辰之光」](../RA2/ExtremeStarryInLinux.md)的玩家写了一篇 Bottles 教程，这里就不再大篇幅去扯淡了，仅供参考。
+
 原生`wine`^multilib^的配置建议参考[官方英文 Wiki](https://wiki.archlinux.org/title/wine)
-和[中文社区的翻译](https://wiki.archlinuxcn.org/wiki/Wine)。~~因为我目前还没整理明白怎么配置，只是需求刚好满足，分享一下而已（~~
-
-::: info 起因：论「星火 Spark」如何变成思维「火花 Sparkle」
-
-这玩意其实算是我的偶然发现，因为我装的`com.163.music.spark`星火版网易云依赖`wine`。目前来说除了 Bottles，我系统里有两个 Wine 兼容环境：
-- `~/.deepinwine/Spark-CloudMusic`：这是网易云实际用的 Wine 环境
-- `~/.wine`：这是 Wine 默认生成的环境
-
-也正因 Wine 的默认环境，我得以双击运行 EXE：
-
-![Wine 对 EXE 可执行程序的文件关联](wine_execute.webp)
-
-对于通过 Syringe 进程注入的程序（如图`FA2.dat`），我使用 WinPE Command（即`PECMD.exe`）制作了个启动器（如图`FA2esLauncher.exe`）。
-事实证明，此法行之有效，我可以在 Arch 里接着做红警 2 地图了。
-
-> 说起来 WinPE 社区甚至兴起了「PECMD 脚本编程」，还有人卖课。但说到底 PECMD 也不过是大量调用了 WinAPI 而已。  
-> 呵，不禁想到，如果我当初搞懂了 PECMD 如何调用`kernel32.dll`写 INI，说不定我也不会踏上编程之路了。或许我还得感谢那次失败呢。
-::: -->
+和[中文社区的翻译](https://wiki.archlinuxcn.org/wiki/Wine)。

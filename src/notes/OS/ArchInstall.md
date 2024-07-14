@@ -97,34 +97,36 @@ U 盘启动 PE 相信很多人都操作过，或者看过教程。LiveCD 也是�
 
 在安装之前，非常建议给`pacman`换用国内镜像源，并开启并行下载（默认是逐个下载）。
 
-- `/etc/pacman.d/mirrorlist`：镜像源配置
-
+::: tip 镜像源配置
+编辑`/etc/pacman.d/mirrorlist`：
 ```ini
 # 在文件开头起一空行，复制下列镜像源：
 Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
 Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
 Server = https://mirrors.aliyun.com/archlinux/$repo/os/$arch
 ```
+变更后的`mirrorlist`会在 Arch 安装过程中被复制过去。这样后续就不需要再做一遍换源了。
+:::
 
-- `/etc/pacman.conf`：pacman 配置
+::: tip 包管理器配置
+编辑`/etc/pacman.conf`：
 
-  1. 找到`# Misc options`，删掉`Color` `ParallelDownloads = 5`前面的注释`#`：
+1. 找到`# Misc options`，删掉`Color` `ParallelDownloads = 5`前面的注释`#`：
+```ini
+# Misc options
+#UseSyslog
+Color            # 输出彩色日志
+#NoProgressBar
+CheckSpace
+#VerbosePkgLists
+ParallelDownloads = 5   # 最大并行下载数（根据你的网速自行斟酌，不建议写太大）
+```
 
-  ```ini
-  # Misc options
-  #UseSyslog
-  Color            # 输出彩色日志
-  #NoProgressBar
-  CheckSpace
-  #VerbosePkgLists
-  ParallelDownloads = 5   # 最大并行下载数（根据你的网速自行斟酌，不建议写太大）
-  ```
+2. 翻页到文件末尾，删掉`[multilib]`和底下`Include =`这两行的注释`#`。
+> `multilib`是 32 位软件源。默认下载的包都是`x86_64`的，而有一些程序仍需要 32 位的库。
 
-  2. 翻页到文件末尾，删掉`[multilib]`和底下`Include =`这两行的注释`#`。
-
-  > `multilib`是 32 位软件源。默认下载的包都是`x86_64`的，而有一些程序仍需要 32 位的库。
-
-变更后的`mirrorlist`和`pacman.conf`会在 Arch 安装过程中被复制过去。这样后续就不需要再做一遍换源了。
+很遗憾，经实测 pacman 配置并不会复制过去。在安装完系统`arch-chroot`进去进一步配置时，你需要重复做一遍上述操作。
+:::
 
 ### 3.2 安装
 
@@ -164,22 +166,22 @@ SigLevel = Optional TrustAll
 但这样在安装密钥环时会有警告，所以装完之后我又把`SigLevel`给`#`注释掉了。
 :::
 
-### 4.2 部分硬件设置
-
-启用（并立即启动）蓝牙服务：
-```bash
-sudo systemctl enable --now bluetooth
-```
+### 4.2 音频安装
 
 音频分为固件（或者说驱动）和管理套件两部分：
 ```bash
 # 音频固件
 sudo pacman -S sof-firmware alsa-firmware alsa-ucm-conf
 # pipewire 音频管理套件
-sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-media-session gst-plugin-pipewire
+sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber gst-plugin-pipewire
 ```
+> [!info]
+> 律回指南里安装的`pipewire-media-session`最近提示「即将过时」，于是我换用`wireplumber`，全面使用 pipewire 音频管理了。  
+> 除了 pipewire 方案之外另有`pulseaudio`可供选择。但务必注意：音频管理套件**只能二选一，不可以混装**。
 
-显卡的配置应在进入图形桌面后再考虑。
+::: note 关于 WirePlumber 进桌面默认静音
+老实说我也不知道为什么。我自己是卸载 wireplumber，重装整套 pipewire 音频管理器之后就好了。
+:::
 
 ## 五、KDE 桌面环境
 
@@ -189,7 +191,7 @@ sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-medi
 本文与那两篇参考外链一样**采用 KDE 桌面环境**。当然除了 KDE 之外，你也可以考虑 GNOME 桌面环境 ~~（只是我用腻了）~~；
 也可以考虑散装方案（比如`hyprland`~~，只是我没装成功~~）。
 
-::: note KDE 6 vs KDE 5？
+::: info KDE 6 vs KDE 5？
 目前最新版本为 KDE 6。但律回指南发布于 23 年 11 月，介绍的是 KDE 5。
 
 话虽如此，倒也不必惊慌。`pacman`以及`yay` `paru`之流均**默认安装最新版**，以下**安装 KDE 5 的步骤仍可用于安装 KDE 6**：
@@ -203,20 +205,29 @@ sudo reboot
 ```
 :::
 
-### 5.1 关于 Wayland 和 X11
-如果你跟着参考的指南装好了 KDE，那么重启之后在输入密码的界面旁边，建议把`plasma (wayland)`（如果是）改选为`plasma (X11)`。
+### 5.1 关于 Wayland 和 X
+KDE 的图形实现默认已经是 Wayland 了。在开机后输入用户密码的界面处，找找屏幕边角，你可以看到默认选用`Plasma (Wayland)`。
+点击它，你可以选择换用`Plasma (X11)`。  
+Wayland 亦或是 X11 二者目前都有一些问题，就看你如何取舍了。
 
-::: info Wayland 仍需观望……
-尽管 Linux 的图形界面实现从 X 转向 Wayland 已是大势所趋，但目前来说 KDE Plasma Wayland 用起来还是比较麻烦：
+::: note X11 的小问题
+KDE 默认 Breeze「深色」主题在「关闭显示器」同时`Meta-L`或等待自然锁屏，**几乎**必然会黑屏只有鼠标，得靠盲打解锁。
+相对的「浅色」主题较大概率正常；把「关闭显示器」这条设置关了并不会出现这种状况。
 
-- Electron 程序（如`linuxqq`）以及 Chrome 需要额外配置`flags`。
+前不久重装 Arch 发现这种现象已经传染给用户自创主题了。像是评分比较高的仿 Mac、Otto、Edna 均会出现这种状况。
+:::
+
+::: note Wayland 的问题
+我这边`visual-studio-code-bin` `linuxqq` `google-chrome`已经不会再出现「拖动最大化窗口不改变最大化状态，而是强行移动窗体」的问题，
+但 Chrome 仍需要以下操作摆脱「强制 100％ 缩放」的限制（我屏幕 125％ 缩放）：
 ```ini
-# ~/.config/qq-flags.conf
---enable-features=WaylandWindowDecorations,WebRTCPipeWireCapturer
+# ~/.config/chrome-flags.conf
+--enable-features=WaylandWindowDecorations
 --ozone-platform-hint=auto
 --enable-wayland-ime
 ```
-- 虽然上述设置解决了「拖动最大化窗口不改变最大化状态，而是强行移动窗体」这类问题，但是`linuxqq`还是**用不了截图键**（会直接闪退）。
+此外，`linuxqq`的截图调用 X 实现，你还是**用不了截图键**（没配置 flags 点了没反应；配置之后点击直接闪退）。
+> 我个人转 Wayland 了。因为之前用 X11 时 linuxqq 的截图也炸过。
 :::
 
 ### 5.2 进入 KDE 桌面之后……
@@ -235,7 +246,15 @@ AMD 或 NVIDIA 显卡可参见律回指南[6.4 小节「显卡驱动安装」](h
 - `vulkan-intel` `lib32-vulkan-intel`（Vulkan）
 - `intel-media-driver`（VAAPI 解码器，OBS 需要）
 
-#### 5.2.2 额外中文字体和输入法
+#### 5.2.2 蓝牙
+
+启用（并立即启动）蓝牙服务：
+```bash
+sudo systemctl enable --now bluetooth
+```
+> 之前误以为`bluetooth`是 Arch 本身就有的服务，查阅 Miku 版指南结合实测发现是 KDE 提供的。
+
+#### 5.2.3 额外中文字体和输入法
 
 律回提到的中文字体包更适合作为 fallback（备选）字体，日常使用只能说勉强能看（但也建议装上）；
 Miku 版指南则建议安装文泉驿字体`wqy-zenhei`^extra^，但我个人觉得这个字体**笔划太细**。
