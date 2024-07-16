@@ -31,11 +31,14 @@ star: true
 ::: details 【仅供参考】我自己的美化方案
 只能说聊胜于无。
 
-- 全局主题：`Nordic-darker`
-  - 控件样式：`Kvantum`内安装的`Nordic-darker`
-  - Plasma 外观：`Nordic-darker`
-  - 图标：`Breeze`（默认）
-  - 欢迎屏幕、登录屏幕可手动选`Nordic`系列。
+- ~~全局主题：`Nordic-darker`~~
+  - ~~控件样式：`Kvantum`内安装的`Nordic-darker`~~
+  - ~~Plasma 外观：`Nordic-darker`~~
+  - ~~图标：`Breeze`（默认）~~
+  - ~~欢迎屏幕、登录屏幕可手动选`Nordic`系列。~~
+  - SDDM 登录屏幕：`WhiteSur-dark`仿 Mac 主题
+
+> 自从发现 X11 深色主题的锁屏黑屏问题蔓延起，我便不太敢接着使用自定义主题了。
 
 - 仿 Mac
   - Dock 栏即原本的任务栏，只保留「图标任务管理器」组件。
@@ -103,7 +106,7 @@ Shell 编程说实话也是一门学问，但这里只讨论两个东西，别�
 如此，每次启动`bash`或`zsh`时，你都可以享受这些用户定义带来的效率红利了（笑）。
 
 > [!note]
-> `~`被称为「家目录」，通常指代`/home/<user_id>`，比如`/home/chloridep`。类比下 Win7 的`C:\Users\ChlorideP`就知道了。
+> `~`被称为「家目录」，通常指代`/home/<user_id>`，比如`/home/chloridep`。类比下 Win7 的`C:\Users\chloridep`就知道了。
 
 ### （一）别名
 语法很简单：`alias a="b"`。注意 a、b 之间**没有空格**。
@@ -127,7 +130,7 @@ function func-name() {
 }
 ```
 函数适合「批处理」这种需要执行多条命令的场景。~~当然你也可以写`if`判断和`for`循环。但这不是重点。~~
-目前来说，我只为了启动 OpenSeeFace 面捕 ~~（唉，底边皮套人）~~ 写了个函数：
+目前来说，我只为了启动 OpenSeeFace 面捕 ~~（唉，底边皮套壬）~~ 写了个函数：
 
 > 关于面捕和 Live2D 皮套，参见
 > [Running VTS on Linux - Vtube Studio Wiki](https://github.com/DenchiSoft/VTubeStudio/wiki/Running-VTS-on-Linux)
@@ -167,7 +170,7 @@ funWithParam 1 2 3 4 5 6 7 8 9 34 73
 
 ## 运行 Windows 程序
 
-说到`.exe`，想必你肯定知道 Wine。当然，Steam 则另外用 Proton。它们都是为了在 Linux 系统里「兼容」Windows API 而生的兼容层。  
+除了最简单的虚拟机大法之外，你也许听说过 Wine。当然 Steam 则采用 Proton。它们都是为了在 Linux 系统里「兼容」WinAPI 而生的兼容层。  
 而说起 Wine，那确实能讲好几个夜晚，我也差不多摸索了半个月。毕竟我是搞红警 2 mod 出身的嘛，
 姑且也为[游玩红警 2 模组「星辰之光」](../RA2/ExtremeStarryInLinux.md)的玩家写了一篇 Bottles 教程，这里就不再大篇幅去扯淡了，仅供参考。
 
