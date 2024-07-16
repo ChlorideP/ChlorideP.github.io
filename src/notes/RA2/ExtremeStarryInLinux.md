@@ -19,6 +19,11 @@ tag:
 对于其他 mod 以及原版红红，乃至于其他游戏和 Windows 程序，本篇笔记的方案可能有一定参考价值，**但不保证能够成功运行**。
 :::
 
+::: note 图片大小
+本篇笔记的插图原图对于电脑端来说会偏大一些，因此我基本上都做了缩小处理——你可以点击图片查看原图。  
+如果您在用移动设备阅读，则这种「缩小」效果可能更明显些。还请见谅。
+:::
+
 那么正式开始之前，我有必要先说一下我的 Linux 环境。由于 Linux 发行版众多，我**无法保证别的包源、别的发行版能否这么操作**。
 
 - 操作系统：Arch Linux
@@ -76,7 +81,8 @@ flatpak run com.usebottles.bottles
 初次运行 Bottles 会弹出一个向导跟你 blabla，无脑下一步即可。
 到最后一步时 Bottles 会下载额外的图形库文件，由于上面介绍过的原因，这里可能也会花费比较长的时间。
 
-![Bottles 主界面](bottles_main.webp =427x303)
+<!-- <img src="./bottles_main.webp" alt="Bottles 主界面" width=50% height=50% /> -->
+![Bottles 主界面](bottles_main.webp =65%x65%)
 
 ### 1.3 给沙箱「凿个洞」
 
@@ -96,7 +102,7 @@ flatpak install com.github.tchx84.Flatseal
 装完 Flatseal 之后，「你需要在左侧菜单选中 Bottles，然后往下滚屏到 Filesystem 部分」。  
 我只需要暴露一个目录`~/Documents`（你可能更希望暴露`~/Games`，自己新建文件夹去），那么点击「其他文件」的右侧图标，新建一项：
 
-![Flatseal 文件系统管理：Bottles](flatseal_fs.webp =512x384)
+![Flatseal 文件系统管理：Bottles](flatseal_fs.webp =65%x65%)
 
 直接手打就可以了。它莫得让你浏览。
 
@@ -123,7 +129,7 @@ flatpak install com.github.tchx84.Flatseal
 > [!warning]
 > 如果你在全局设置里改过默认目录，千万不要在新建这里又改到同一个位置，否则会报**符号占用，创建失败**。
 
-![新建 Bottle](bottles_new_venv.webp =300x250)
+![新建 Bottle](bottles_new_venv.webp =65%x65%)
 
 然后在右上角点击「创建」即可。
 
@@ -162,7 +168,7 @@ ln -s ~/Documents Documents  # 把我的「文档」目录链接过去（前提�
 
 然后点开你刚建好的 Bottle 进入详情页，为客户端`Extreme Starry.exe`设置快捷方式，这样就不需要每次都「运行可执行程序」找半天了。  
 
-![Bottle 详情](bottle_preferences.webp =428x304)
+![Bottle 详情](bottle_preferences.webp =65%x65%)
 
 > [!tip]
 > 在「选择可执行文件」对话框中，若找不到 exe，请在「过滤」那里改为`Supported Executables`。
@@ -174,9 +180,9 @@ ln -s ~/Documents Documents  # 把我的「文档」目录链接过去（前提�
 
 那么不妨手动指定启动器的「工作目录」。
 
-![在右侧展开快捷方式菜单，点击「更改启动选项」](client_not_found_so1.webp =495x135)
+![在右侧展开快捷方式菜单，点击「更改启动选项」](client_not_found_so1.webp =75%x75%)
 
-![更改「工作目录」](client_not_found_so2.webp =470x265)
+![更改「工作目录」](client_not_found_so2.webp =75%x75%)
 
 > [!important]
 > 无论客户端是选`Extreme Starry.exe`还是直接选择`Resources/client*.exe`，
