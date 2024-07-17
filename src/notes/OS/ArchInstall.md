@@ -264,19 +264,24 @@ sudo systemctl enable --now bluetooth
 
 ### 5.3 额外中文字体和输入法
 
-律回指南安装的字体分别是 Noto 系列（Linux 常用的 Unicode 字体）和思源系列。
-其中 Noto 系列也是 KDE 默认的 fallback 字体，汉字部分只能说……能用。
+律回指南安装的字体分别是 Noto 系列（Linux 常用的 Unicode 字体）和思源系列（也算是 Noto 系列的子集）。
+其中 Noto 系列的汉字部分由于一些神秘的原因，渲染出来只能说……能用。
 
-> 思源系列实际用下来还是很不错的。可惜被 fallback 坑了。
+::: info 参考资料
+- [Arch Wiki：关于中文字被异常渲染成日文异体字的说明](https://wiki.archlinux.org/title/Localization/Simplified_Chinese#Chinese_characters_displayed_as_variant_(Japanese)_glyphs)^2^
+- [Arch CN BBS：noto-fonts-cjk 打包变化可能导致的回落字体选取问题](https://bbs.archlinuxcn.org/viewtopic.php?pid=60100)^2^
+:::
 
 Miku 版指南则建议额外安装文泉驿字体`wqy-zenhei`^extra^，但我个人觉得这个字体笔划太细。
 我目前在用小米那套`misans`^aur^，想「遥遥领先」也可以试试鸿蒙字体`ttf-harmonyos-sans`^aur^。
 
-> 7 月初再重装时发现`misans`这包会卡在编译—打包的死循环，后面改为手动安装`ttf-misans` `otf-misans` `misans-fontconfig`。
+> 7 月初再重装时发现`misans`包会卡在解包—构建的死循环，后面改为手动安装`ttf-misans` `otf-misans` `misans-fontconfig`。
 
-::: info OTF 与 TTF
-鸿蒙字体目前尚未发现 OTF 版本，也就意味着系统不会优先考虑鸿蒙字体去渲染。
-事实上，在发现`misans`循环打包的问题之后，我也尝试过鸿蒙字体，结论是：并不影响系统 fallback 回 Noto 系列字体。
+::: note fontconfig
+由于`misans`安装时会连带安装`misans-fontconfig`，变相帮你配置 fontconfig（文泉驿也是一样），
+因此相当长的一段时间内我很自然地忽略了它，并从其他主观猜测的角度对 Noto 系列字体和鸿蒙字体抱有微词。~~当然现在已经纠正了。~~
+
+如果您希望食用 Noto 系列字体、鸿蒙字体，或是其他没有特别适配的字体，还请**注意在安装完成之后另行配置 fontconfig**。
 :::
 
 至于输入法，律回指南推荐安装搜狗拼音`fcitx-sogoupinyin`^aur^，
