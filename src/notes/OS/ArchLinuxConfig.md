@@ -5,7 +5,6 @@ category:
 tag:
   - Arch Linux
   - KDE
-star: true
 ---
 
 # Arch Linux 个人配（调）置（教）指南

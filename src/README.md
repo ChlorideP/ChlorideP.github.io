@@ -2,7 +2,7 @@
 home: true
 layout: BlogHome
 icon: home
-title: 前台展厅
+title: 主页
 heroImage: /assets/images/beibei.webp
 heroText: 氯离子实验室
 heroFullScreen: true
@@ -16,5 +16,7 @@ tagline: 不妨就把它当作是咱的「创意工坊」吧。欢迎你的来�
   #   link: /archives/RA2/TriggerLogics.html
 ---
 
+::: center
 Powered by [VuePress Theme Hope](https://theme-hope.vuejs.press/zh/),  
 Licensed with MIT & CC BY-NC-SA 4.0.  
+:::
