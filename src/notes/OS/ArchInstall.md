@@ -185,12 +185,44 @@ SigLevel = Optional TrustAll
 ```bash
 # 音频固件
 sudo pacman -S sof-firmware alsa-firmware alsa-ucm-conf
-# pipewire 音频管理套件
-sudo pacman -S pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber gst-plugin-pipewire
+# pipewire 及其音频管理套件
+sudo pacman -S pipewire gst-plugin-pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber
 ```
-> [!info]
-> 律回指南里安装的`pipewire-media-session`最近提示「即将过时」，于是我换用`wireplumber`，全面使用 pipewire 音频管理了。  
-> 除了 pipewire 方案之外另有`pulseaudio`可供选择。但务必注意：音频管理套件**只能二选一，不可以混装**。
+::: details wireplumber
+> 律回指南里安装的`pipewire-media-session`最近提示「即将过时」，于是我换用`wireplumber`，全面使用 pipewire 音频管理了。
+
+需要指出的是，`wireplumber`最近（应该说持续一个多月）出现「进桌面没有声音」的现象。  
+我是 KDE 配 SDDM（在论坛里找到的「病友」多为 GDM），详细症状如下：
+
+- 刚登进桌面，音量栏目里设备没被静音，无论如何拖曳音量条，就是听不到；
+- 通过接入（或移除）音频外设可使设备恢复正常。  
+  比如开机时接入了 3.5mm 耳机，那么进入桌面后需要拔插一下，耳机才有伸音。
+
+对此，英文论坛里某位「脚本仁兄」给出了如下方案：
+```sh
+#!/bin/sh
+pactl set-sink-mute 0 toggle  # 静音
+pactl set-sink-mute 0 toggle  # 重置，也就取消静音
+```
+但仅仅对刚登入桌面时的音频设备有效。比如，插入耳机之后，耳机无声；拔出耳机之后，扬声器无声；再次拔插，耳机和扬声器才都有伸音。
+
+据 GitLab 那边的反馈似乎得等到八月中旬才方便修，那我还是考虑 pulseaudio 罢。
+:::
+
+::: info pulseaudio
+除了 pipewire 音频方案之外另有`pulseaudio`可供选择。但务必注意：音频管理套件**只能二选一，不可以混装**。
+
+另外，由于 pipewire 本身不单只负责音频管理的工作，如需装 pulseaudio 仍需安装`pipewire` `gst-plugin-pipewire`两个包。  
+相应地，其余的包可换用如下平替：
+
+- `pipewire-alsa` → `pulseaudio-alsa`
+- `pipewire-jack` → `jack2`
+- `pipewire-pulse` → `pulseaudio`
+- `wireplumber` → `pipewire-media-session`【Deprecated】
+
+> 由于 pipewire 那边有 wireplumber 代替 pipewire-media-session，所以这个包被他们自行标记为「过时」。  
+> 但 pulseaudio 仍需要这个包。
+:::
 
 显卡、蓝牙等其他硬件设施需要在装好桌面环境后再考虑。至少**到本小节为止你的系统里并没有蓝牙服务**，无法启用。
 
