@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        "**/*.png": true,
+        "**/*.webp": true
+    }
+}
