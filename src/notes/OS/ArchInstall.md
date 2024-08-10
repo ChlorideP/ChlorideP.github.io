@@ -72,7 +72,7 @@ U 盘启动 PE 相信很多人都操作过，或者看过教程。LiveCD 也是�
 - [7. 分区和格式化（使用 Btrfs 文件系统）](https://arch.icekylin.online/guide/rookie/basic-install.html#_7-%E5%88%86%E5%8C%BA%E5%92%8C%E6%A0%BC%E5%BC%8F%E5%8C%96-%E4%BD%BF%E7%94%A8-btrfs-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F)
 
 > 我个人不太喜欢 Miku 把 EFI 分区和其他 Linux 分区拆开讲解。  
-> 但「Miku 是这样的。Kariko Lin 只需轻描淡写地清空硬盘全新安装就可以，而 Miku 要考虑的情况就很多了」。
+> 但「分区是这样的。Kariko Lin 只需清空硬盘全新安装就可以，而 Miku 演示双系统要考虑的情况就很多了」。
 
 ::: details 补充一下律回的 fdisk 操作流程
 > 注：下列内容也只考虑「全新安装」。
