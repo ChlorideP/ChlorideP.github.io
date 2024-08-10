@@ -31,6 +31,8 @@ tag:
 ```bash
 env LD_PRELOAD="/usr/lib/libssh2.so" linuxqq
 ```
+或者，可以编辑开始菜单的 QQ 快捷方式（`qq.desktop`）：  
+右键「编辑应用程序」，在「应用程序」页里粘贴`LD_PRELOAD="/usr/lib/libssh2.so"`环境变量。
 
 ## GPG 密钥相关
 
