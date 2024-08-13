@@ -170,7 +170,7 @@ sudo pacman -S archlinuxcn-keyring  # 安装密钥环
 sudo pacman -S yay paru   # 安装 AUR 助手
 ```
 ::: info 关于本地信任 Key
-简单来说就是给 CN 源密钥环签名的是`farseerfc`，而他的 Key 掉信任了，包管理器「不敢」安装这个密钥环^2^。
+简单来说就是给 CN 源密钥环签名的`farseerfc`他的 Key 掉信任了，包管理器「不敢」安装这个密钥环^2^。
 
 事实上，我是通过更笨（也不推荐）的办法装上密钥环的——在刚刚编辑的`/etc/pacman.conf`里**临时**给`[archlinuxcn]`手动添加签名等级：
 ```ini

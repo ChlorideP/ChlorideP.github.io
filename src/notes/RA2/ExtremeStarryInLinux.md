@@ -104,7 +104,16 @@ flatpak install com.github.tchx84.Flatseal
 
 ![Flatseal 文件系统管理：Bottles](flatseal_fs.webp =65%x65%)
 
-直接手打就可以了。它莫得让你浏览。
+现在可以浏览指定目录了 ~~，但我并不想更新插图~~。
+
+> [!note]
+> 在 Linux 中，`~`和`$HOME`^①^通常指代`/home/<user_id>`，比如`/home/chloridep`。
+> 类比下 Win7 的`%UserProfile%`和`C:\Users\chloridep`就知道了。
+> 
+> ① Linux 的路径是**区分大小写**的，终端里的环境变量（通常全大写）也是。
+> ::: center
+> YURI.exe &ne; yuri.EXE；$HOME &ne; $home
+> :::
 
 ## 二、部署
 

@@ -73,11 +73,8 @@ Shell 编程说实话也是一门学问，但这里只讨论两个东西，别�
 你可以把需要简记、快速调用的东西包装成别名或者函数，写进`~/.bashrc`（或者`~/.zshrc`，如果你换用 zsh 的话）。
 如此，每次启动`bash`或`zsh`时，你都可以享受这些用户定义带来的效率红利了（笑）。
 
-> [!note]
-> `~`被称为「家目录」，通常指代`/home/<user_id>`，比如`/home/chloridep`。类比下 Win7 的`C:\Users\chloridep`就知道了。
-
 ### i. 别名
-语法很简单：`alias a="b"`。注意 a、b 之间**没有空格**。
+语法很简单：`alias a="b"`。注意等号两边**没有空格**。
 
 你可以为内置命令附加一些特性，像默认的`.bashrc`有这么两条：
 ```bash
@@ -94,8 +91,7 @@ alias pac='sudo pacman'
 
 Shell 的函数是这么写的：
 ```bash
-function func-name() {
-}
+function func-name() { }
 ```
 函数适合「批处理」这种需要执行多条命令的场景。~~当然你也可以写`if`判断和`for`循环。但这不是重点。~~
 目前来说，我只为了启动 OpenSeeFace 面捕 ~~（唉，底边皮套壬）~~ 写了个函数：
@@ -199,8 +195,8 @@ KDE 原生的 UI 就挺 Windows 的，但胜在自由度足够高。
 
 > [!note]
 > 所谓「字体替换包」就是将其他字体的标识强行更改为「微软雅黑」（或者别的 Windows 预置字体），重新封装的字体文件。
-> 由于 Windows 的字体对应主要通过注册表进行，这种「字体替换包」旨在通过直接覆盖`msyh*.ttc`的实际字形表现（毕竟「没动标识」），
-> 达到更改 Windows 默认字体的目的。
+> 由于 Windows 的字体对应主要通过注册表进行，这种字体替换包旨在通过直接覆盖`msyh*.ttc`（或者`simsun.ttc`等）的实际字形表现
+> （毕竟标识没动），达到更改 Windows 默认字体的目的。
 >
 > ::: details Windows 字体选取机制
 > 参考资料：[微软文档 -「全球化」- UI - 字体](https://learn.microsoft.com/zh-cn/globalization/fonts-layout/fonts)
@@ -211,14 +207,29 @@ KDE 原生的 UI 就挺 Windows 的，但胜在自由度足够高。
 > 首先检索`Fonts`里对应字体规格是否有文件对应。例如，「微软雅黑 (TrueType)」会对应`msyh.ttc`。
 > 一般 Windows Vista 及以上系统显然**有这个文件**，点开这个字体**文件也有名为「微软雅黑」的字体规格**，
 > 那么系统便直接取指定文件的指定规格，去渲染**刷了指定字体格式的文字**（比如 Word、OBS 文字层、程序资源文件等）。
-> > 根据官方文档，字体「回落」首先发生在渲染引擎。比如，CSS 的`font-family`可以指定一系列字体，以应对不同操作系统的字体库差异。  
+> > 根据微软文档，字体「回落」首先发生在渲染引擎。比如，CSS 的`font-family`可以指定一系列字体，以应对不同操作系统的字体库差异。  
 > > 渲染引擎的「回落」在 Windows 里应该是仍遵循 Fonts 对应原则的。因为此时检索的还是具体的字体规格字符串，或者至少是字体名称字符串。
 > 
-> 若找不到对应的字体形制，则尝试系统层面的 FallBack（即「回落」）。官方文档对 Windows 的回落机制有个大致的叙述：
+> 若找不到对应的字体规格，则尝试系统层面的 FallBack（即「回落」）。微软文档对 Windows 的回落机制有个大致的叙述：
 > 
 > > The Windows operating system allows for font substitution,
 > > but font substitution **should be considered a last resort approach**.
 > 
-> 简单来说，**「链接」优先，「替代」保底**。其中，「替代」是一对一的关系（值的类型均为`REG_SZ`，且并未看到过填入多个值的案例）；「链接」则维护备选的字体列表。
-> 若原字体没有收录某个字、渲染不出来，则转而查询「链接」表；若仍猹不到，则直接将这类字体统一「替代」成相应的字体和代码页（即编码）。
+> 简单来说，**「链接」优先，「替代」保底**。
+> 其中，「替代」是一对一的关系（值的类型均为`REG_SZ`，且并未看到过填入多个值的案例）；「链接」则维护备选的字体列表。
+> 若原字体没有收录某个字、渲染不出来，则转而查询链接表；若仍猹不到，则直接将这类字体统一替代成相应的字体和代码页（即编码）。
 > :::
+
+## 重建 Grub 引导
+虽然对多数人（乃至现在的我）来说重建引导似乎挺简单的，但在事情尚未解决之前我内心慌得一批：我又作什么死了？咋就翻车了？
+
+事情是这样的：我装 WinToGo 的盘似乎有逻辑问题，开机时触发了磁盘修复。然后这修复把我内置硬盘的引导扇区也改了。
+于是尽管我的分区完好，但 BIOS（或者主板？）显然无法从 Win 的引导扇区找到 Grub 的启动文件。于是就「No Bootable Device(s)」了。
+
+后面谷歌了下，得知需要重建（Grub）引导。详细介绍可以看[这篇文章](https://medium.com/@rahulsabinkar/how-to-restore-your-broken-grub-boot-loader-on-arch-linux-using-chroot-2fbc38bb01d9)；省流版说实话就是重走一遍安装系统时的「刷入 Grub 引导」流程：
+
+- 从 LiveCD 启动，挂载`mount`相应分区；
+- 切换`arch-chroot`进挂载的 Arch 系统；
+- 重刷 Grub `grub-install`。
+
+上面提到的文章末尾还推荐你改用 [rEFInd](https://wiki.archlinux.org/title/REFInd)，但相关的介绍和教程已经在 Miku 指南里提及过了，这里就不再扯淡了。
