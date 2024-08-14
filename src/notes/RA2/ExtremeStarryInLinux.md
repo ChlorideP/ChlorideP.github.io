@@ -146,11 +146,6 @@ flatpak install com.github.tchx84.Flatseal
 
 把你的「星辰之光」游戏目录复制进 1.3 小节暴露给 Bottles 的目录。
 
-::: note 插播一条喜报
-仍在使用原版套娃菜单 UI 的红警 2 mod，以及原版红警 2、尤里的复仇，现在均能采用本文提供的方法游玩辣。
-不过对于`RunAres.bat`使用者，可能需要你[制作一个 EXE 启动器](#补充-手搓一个-ares-启动器)。
-:::
-
 ::: details 为「文档」目录建立软链接
 上面 1.3 小节中我把「文档」目录暴露给 Bottles，但沙盒运行的 Bottles 仍会自行建一个空的`Documents`。
 为此，可以把`~/Documents`链接到 Wine 虚拟环境的用户目录下，充当虚拟环境的用户「文档」目录。
@@ -236,7 +231,7 @@ ln -s ~/Documents Documents  # 把我的「文档」目录链接过去（前提�
 ![位于详情页标题栏的「电源」图示](bottle_kill_proc.webp =103x87)
 :::
 
-## 补充：手搓一个 Ares 启动器
+<!-- ## 补充：手搓一个 Ares 启动器
 
 > [!warning]
 > 我个人不推荐那种把批处理「打包」成 exe 的启动器。谁知道 Wine 兼容层会如何执行这个批处理呢？
@@ -291,4 +286,4 @@ int WINAPI WinMain(HINSTANCE hIns, HINSTANCE hPrevIns, LPSTR lpCmdLine, int nCmd
 ```
 EXEC %CurDir%\Syringe.exe "gamemd.exe" -SPAWN -LOG -CD -SPEEDCONTROL
 ```
-于是启动器就做好咯。
+于是启动器就做好咯。 -->
