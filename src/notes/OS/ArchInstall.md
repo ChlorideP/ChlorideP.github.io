@@ -254,26 +254,25 @@ sudo reboot
 ### 5.1 关于 Wayland 和 X
 KDE 的图形实现默认已经是 Wayland 了。在开机后输入用户密码的界面处，找找屏幕边角，你可以看到默认选用`Plasma (Wayland)`。
 点击它，你可以选择换用`Plasma (X11)`。  
-Wayland 亦或是 X11 二者目前都有一些问题，就看你如何取舍了。
+尽管 X11 有个「锁屏黑屏」的问题，但目前来说我还是推荐换回 X11。
 
-::: details X11 的小问题
-KDE 默认 Breeze「深色」主题在「关闭显示器」同时`Meta-L`或等待自然锁屏，**几乎**必然会黑屏只有鼠标，得靠盲打解锁。
-相对的「浅色」主题较大概率正常；把「关闭显示器」这条设置关了并不会出现这种状况。
+::: details 个人的使用体验
+首先说说 X11 的「锁屏黑屏」。KDE 的默认 Breeze 主题锁屏时大概率会出现黑屏、惟有鼠标的现象。在 7 月中旬时已经发现该现象已经蔓延到自定义主题了。查了下 Google 以及 Arch、Manjaro、KDE 的一些讨论帖，均没有有效的解决方案。
 
-前不久重装 Arch 发现这种现象已经传染给用户自创主题了。像是评分比较高的仿 Mac、Otto、Edna 均会出现这种状况。
-:::
+在寻求解法无果之后，我一度转向了 Wayland。但新生的 Wayland 说实话还有很长的路要走：
+- 部分 Electron 应用需要借助`~/.config/xx-flags.conf`手动添加 Wayland 支持：
+  ```ini
+  --enable-features=WaylandWindowDecorations
+  --ozone-platform-hint=auto
+  --enable-wayland-ime
+  ```
+  像`google-chrome`就需要`chrome-flags.conf`来保证能够正常按 125% 倍率缩放。
+- 另有一些应用 125% 缩放后可能会有偏移，例如 OBS Studio 调整场景构成的时候，鼠标需要左移一些才能选中它，更遑论拖曳缩放了。
+  当然此现象可以通过最大化窗口缓解。
+- 部分 GUI 功能尚未适配 Wayland，可能不可用甚至闪退：像 LinuxQQ 的截图键、VSCode 的 GlassIt-Linux 窗口透明插件，等等。
 
-::: details Wayland 的问题
-我这边`visual-studio-code-bin` `linuxqq` `google-chrome`已经不会再出现「拖动最大化窗口不改变最大化状态，而是强行移动窗体」的问题，
-但 Chrome 仍需要以下操作摆脱「强制 100％ 缩放」的限制（我屏幕 125％ 缩放）：
-```ini
-# ~/.config/chrome-flags.conf
---enable-features=WaylandWindowDecorations
---ozone-platform-hint=auto
---enable-wayland-ime
-```
-此外，`linuxqq`的截图调用 X 实现，你还是**用不了截图键**（没配置 flags 点了没反应；配置之后点击直接闪退）。
-> 我个人转 Wayland 了。因为之前用 X11 时 linuxqq 的截图也炸过。
+说实话锁屏界面的其他功能（睡眠、锁屏、切换用户）我都用不上。就算黑屏，我也可以直接盲打密码、回车解锁。至少解锁之后画面能出来。  
+于是在安装 GlassIt 插件之后，最终我还是换回 X11 了。
 :::
 
 ### 5.2 硬件（二）显卡驱动与蓝牙
