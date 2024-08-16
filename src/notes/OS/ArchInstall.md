@@ -43,7 +43,7 @@ Ubuntu 我也试过，开箱即用，很不错。而真正决定装 Arch、当�
 
 本文有参考以下两篇安装教程：
 
-1. [律回彼境：Arch Linux 折腾指南&记录](ttps://www.glowmem.com/archives/archlinux-note)（以下简称「律回指南」）
+1. [律回彼境：Arch Linux 折腾指南&记录](https://www.glowmem.com/archives/archlinux-note)（以下简称「律回指南」）
 2. [Nakano Miku：Arch 简明指南](https://arch.icekylin.online/guide/)（以下简称「Miku 指南」）
 
 我的笔记**以律回 MelodyEcho 的流程为主**，偶尔穿插一下 Miku 指南。
