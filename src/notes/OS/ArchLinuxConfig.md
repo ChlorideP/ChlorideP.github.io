@@ -147,14 +147,14 @@ funWithParam 1 2 3 4 5 6 7 8 9 34 73
 
 > [!tip]
 > - **风格统一**是「美观」的必要条件。
-> - 少搞「侵入性」美化。或者说，需要**修改系统文件、系统进程**的、**破坏稳定**的美化**尽量少做**。
+> - 少搞「侵入性」美化。或者说，需要**修改系统文件、注入系统进程、破坏系统稳定的美化尽量少做**。
 > - **谨遵发布页面附送的安装指引**（KDE 主题可以参考项目 GitHub），否则可能安装不全。
 
 > [!warning]
 > 目前大部分 KDE 美化方案适用于 KDE 5，换言之已经过时。比如`latte-dock`已明显无法用于 KDE 6。
 
 ### i. 仿 Mac
-KDE 原生的 UI 就挺 Windows 的，但胜在自由度足够高。
+KDE 原生的桌面 UI 就挺 Windows 的，但胜在自由度足够高。
 我**个人觉得** Mac OS 那种双栏比较好看、比较方便，所以稍微按照如下配置调整了面板布局。
 
 仅供参考咯。
@@ -228,8 +228,9 @@ KDE 原生的 UI 就挺 Windows 的，但胜在自由度足够高。
 
 后面谷歌了下，得知需要重建（Grub）引导。详细介绍可以看[这篇文章](https://medium.com/@rahulsabinkar/how-to-restore-your-broken-grub-boot-loader-on-arch-linux-using-chroot-2fbc38bb01d9)；省流版说实话就是重走一遍安装系统时的「刷入 Grub 引导」流程：
 
-- 从 LiveCD 启动，挂载`mount`相应分区；
+- 从 LiveCD 启动，挂载`mount`相应分区。
+- 【注意】确认分区实际 UUID 是否与挂载表`fstab`记载一致。如不放心，重新`genfstab`生成挂载表。
 - 切换`arch-chroot`进挂载的 Arch 系统；
 - 重刷 Grub `grub-install`。
 
-上面提到的文章末尾还推荐你改用 [rEFInd](https://wiki.archlinux.org/title/REFInd)，但相关的介绍和教程已经在 Miku 指南里提及过了，这里就不再扯淡了。
+上面提到的文章末尾还推荐你改用 [rEFInd](https://wiki.archlinux.org/title/REFInd)，但相关的介绍和教程已经在 Miku 指南里提及过了，这里就不再赘述。
