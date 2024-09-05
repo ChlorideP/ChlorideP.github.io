@@ -115,8 +115,7 @@ function start-facetrack() {
 ```
 
 ::: info 传参
-我原本是 Win 玩家，初见 Shell 的函数发现与 PowerShell 那个比较像（无论编写还是调用）。
-直到查了下[菜鸟教程](https://www.runoob.com/linux/linux-shell-func.html)，才发现是我倒反天罡了。
+参考资料：[菜鸟教程](https://www.runoob.com/linux/linux-shell-func.html)
 
 简单来说，Shell 的传参通过「位序」确定：
 ```bash
@@ -186,47 +185,41 @@ KDE 原生的桌面 UI 就挺 Windows 的，但胜在自由度足够高。
 除了 Finder 栏外，可以在系统设置里更改屏幕四周的鼠标表现。
 比如，鼠标移动到左上角可以自动弹出「应用程序启动器」，移到右上角可以切换你的桌面，等等。
 
-### ii. Wine 字体选取
+### ii. Wine / Windows 字体选取
 
 这个议题本身是出于我个人对字体的强迫症，以及个人对经典「微软雅黑」的偏见展开的，本来也没有讨论的必要。
 但在探索 work around 时对 Windows 字体回落机制的 ~~阉阄~~ 研究还是值得一小节笔记的。
 
-说白了和 Windows 里折腾「替换默认字体」的路子没什么两样——**注册表，或是刷入「字体替换包」**。诸如 MacType 等全局调整字体渲染的工具在 Wine 中可能并不起作用。
+::: details Windows 字体选取机制
+参考资料：[微软文档 -「全球化」- UI - 字体](https://learn.microsoft.com/zh-cn/globalization/fonts-layout/fonts)
 
-> [!note]
-> 所谓「字体替换包」就是将其他字体的标识强行更改为「微软雅黑」（或者别的 Windows 预置字体），重新封装的字体文件。
-> 由于 Windows 的字体对应主要通过注册表进行，这种字体替换包旨在通过直接覆盖`msyh*.ttc`（或者`simsun.ttc`等）的实际字形表现
-> （毕竟标识没动），达到更改 Windows 默认字体的目的。
->
-> ::: details Windows 字体选取机制
-> 参考资料：[微软文档 -「全球化」- UI - 字体](https://learn.microsoft.com/zh-cn/globalization/fonts-layout/fonts)
->
-> Windows 主要通过注册表 `HKLM\SoftWare\Microsoft\Windows NT\CurrentVersion`
-> 里的三个子项`Fonts` `FontSubstitutes` `FontLink\SystemLink`进行字体选取。
->
-> 首先检索`Fonts`里对应字体规格是否有文件对应。例如，「微软雅黑 (TrueType)」会对应`msyh.ttc`。
-> 一般 Windows Vista 及以上系统显然**有这个文件**，点开这个字体**文件也有名为「微软雅黑」的字体规格**，
-> 那么系统便直接取指定文件的指定规格，去渲染**刷了指定字体格式的文字**（比如 Word、OBS 文字层、程序资源文件等）。
-> > 根据微软文档，字体「回落」首先发生在渲染引擎。比如，CSS 的`font-family`可以指定一系列字体，以应对不同操作系统的字体库差异。  
-> > 渲染引擎的「回落」在 Windows 里应该是仍遵循 Fonts 对应原则的。因为此时检索的还是具体的字体规格字符串，或者至少是字体名称字符串。
-> 
-> 若找不到对应的字体规格，则尝试系统层面的 FallBack（即「回落」）。微软文档对 Windows 的回落机制有个大致的叙述：
-> 
-> > The Windows operating system allows for font substitution,
-> > but font substitution **should be considered a last resort approach**.
-> 
-> 简单来说，**「链接」优先，「替代」保底**。
-> 其中，「替代」是一对一的关系（值的类型均为`REG_SZ`，且并未看到过填入多个值的案例）；「链接」则维护备选的字体列表。
-> 若原字体没有收录某个字、渲染不出来，则转而查询链接表；若仍猹不到，则直接将这类字体统一替代成相应的字体和代码页（即编码）。
-> :::
+Windows 主要通过注册表 `HKLM\SoftWare\Microsoft\Windows NT\CurrentVersion`
+里的三个子项`Fonts` `FontSubstitutes` `FontLink\SystemLink`进行字体选取。
+
+首先检索`Fonts`里对应字体规格是否有文件对应。例如，「微软雅黑 (TrueType)」会对应`msyh.ttc`。
+一般 Windows Vista 及以上系统显然**有这个文件**，点开这个字体**文件也有名为「微软雅黑」的字体规格**，
+那么系统便直接取指定文件的指定规格，去渲染**刷了指定字体格式的文字**（比如 Word、OBS 文字层、程序资源文件等）。
+> 根据微软文档，字体「回落」首先发生在渲染引擎。比如，CSS 的`font-family`可以指定一系列字体，以应对不同操作系统的字体库差异。  
+> 渲染引擎的「回落」在 Windows 里应该是仍遵循 Fonts 对应原则的。因为此时检索的还是具体的字体规格字符串，或者至少是字体名称字符串。
+
+若找不到对应的字体规格，则尝试系统层面的 FallBack（即「回落」）。微软文档对 Windows 的回落机制有个大致的叙述：
+
+> The Windows operating system allows for font substitution,
+> but font substitution **should be considered a last resort approach**.
+
+简单来说，**「链接」优先，「替代」保底**。
+其中，「替代」是一对一的关系（值的类型均为`REG_SZ`，且并未看到过填入多个值的案例）；「链接」则维护备选的字体列表。
+若原字体没有收录某个字、渲染不出来，则转而查询链接表；若仍猹不到，则直接将这类字体统一替代成相应的字体和代码页（即编码）。
+:::
+
+当然，随着我这边把系统区域与语言改为英语（美国），Wine 这边不可避免地出现编码混乱的问题（需要手动指定`LANG`环境变量），
+动注册表触发系统级字体回落机制的办法已然失效。
 
 ## 重建 Grub 引导
-虽然对多数人（乃至现在的我）来说重建引导似乎挺简单的，但在事情尚未解决之前我内心慌得一批：我又作什么死了？咋就翻车了？
+虽然对多数人（乃至现在的我）来说重建引导似乎挺简单的，但还是需要说明一下，因为 Grub 引导钛脆弱辣。  
+简而言之，一旦 Arch 系统硬盘出了什么变故（被 ChkDsk、DiskGenius 干过，或是换了块硬盘又换回来），其 Grub 引导均会失效（BIOS 不识别），但此时硬盘分区（含 EFI 分区）均完好。
 
-事情是这样的：我装 WinToGo 的盘似乎有逻辑问题，开机时触发了磁盘修复。然后这修复把我内置硬盘的引导扇区也改了。
-于是尽管我的分区完好，但 BIOS（或者主板？）显然无法从 Win 的引导扇区找到 Grub 的启动文件。于是就「No Bootable Device(s)」了。
-
-后面谷歌了下，得知需要重建（Grub）引导。详细介绍可以看[这篇文章](https://medium.com/@rahulsabinkar/how-to-restore-your-broken-grub-boot-loader-on-arch-linux-using-chroot-2fbc38bb01d9)；省流版说实话就是重走一遍安装系统时的「刷入 Grub 引导」流程：
+重建 Grub 引导的详细介绍可以看[这篇文章](https://medium.com/@rahulsabinkar/how-to-restore-your-broken-grub-boot-loader-on-arch-linux-using-chroot-2fbc38bb01d9)；省流版说实话就是重走一遍安装系统时的「刷入 Grub 引导」流程：
 
 - 从 LiveCD 启动，挂载`mount`相应分区。
 - 【注意】确认分区实际 UUID 是否与挂载表`fstab`记载一致。如不放心，重新`genfstab`生成挂载表。
