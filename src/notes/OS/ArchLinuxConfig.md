@@ -66,7 +66,7 @@ gpg -a -o private-file.key --export-secret-keys <keyid>
 gpg --import ~/public-file.key
 gpg --allow-secret-key-import --import ~/private-file.key
 ```
-重新导入 Key 之后，可能还需要`gpg trust`重设信任、`gpg --edit-key`更改密码（`passwd`）。
+重新导入 Key 之后，可能还需要`gpg --edit-key`更改密码（`passwd`）、重设信任（`trust`）。
 
 ## Linux Shell 相关
 Shell 编程说实话也是一门学问，但这里只讨论两个东西，别名`alias`和函数`function`。  

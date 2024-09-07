@@ -218,7 +218,7 @@ pactl set-sink-mute 0 toggle  # 重置，也就取消静音
 - `pipewire-alsa` → `pulseaudio-alsa`
 - `pipewire-jack` → `jack2`
 - `pipewire-pulse` → `pulseaudio`
-- `wireplumber` → `pipewire-media-session`【Deprecated】
+- `wireplumber` → `pipewire-media-session`（pipewire 弃用）
 
 > 由于 pipewire 那边有 wireplumber 代替 pipewire-media-session，所以这个包被他们自行标记为「过时」。  
 > 但 pulseaudio 仍需要这个包。
