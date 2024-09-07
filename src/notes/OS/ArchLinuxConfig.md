@@ -227,3 +227,30 @@ Windows 主要通过注册表 `HKLM\SoftWare\Microsoft\Windows NT\CurrentVersion
 - 重刷 Grub `grub-install`。
 
 上面提到的文章末尾还推荐你改用 [rEFInd](https://wiki.archlinux.org/title/REFInd)，但相关的介绍和教程已经在 Miku 指南里提及过了，这里就不再赘述。
+
+::: details EFIStub 简介
+参考资料：[Arch Wiki - EFIStub](https://wiki.archlinux.org/title/EFISTUB)
+
+Arch 默认安装的 Linux 内核允许直接通过计算机固件（或者说 BIOS？）引导，并相应地加载、进入 Arch Linux 系统。
+
+当然，有一些固件可能本身就支持新增、删除引导项（如华硕 Adol14Z）。方便的话，也可以直接在 BIOS 里操作；此外，还有一些固件不支持传递内核参数，需要另外包装成`.efi`文件交给固件引导（Wiki 2.1 注）。
+
+我参考的两篇安装指南都有涉及`efibootmgr`软件包的安装，理论上你可以直接使用它来创建 UEFI 启动项：
+```bash
+# 以 Btrfs 文件系统为例（仅供参考）
+sudo efibootmgr --create --disk /dev/nvme0n1 --part 1 \
+  --label "Arch Linux" --loader /vmlinuz-linux \
+  --unicode 'root=UUID=f6419b76-c55b-4d7b-92f7-99c3b04a2a6f rw rootflags=subvol=@  loglevel=3 quiet initrd=\intel-ucode.img initrd=\initramfs-linux.img'
+```
+`--unicode`后面跟着的就是**内核参数**。需要重点留意：
+- `root=` Arch 系统根目录`/`分区
+- `resume=` 休眠挂起、恢复的 Swap 分区
+> 像上面的`UUID=`传参法需要确认好分区 UUID，可用`lsblk -o name,mountpoint,size,uuid`猹询。
+> 此外尚不清楚`/dev/nvme0n1pX`这种写法可不可行。目前没有条件实机测试。
+
+- `initrd=` 初始化镜像。每个镜像都要前置`initrd=`，并且挂载遵循先后顺序。
+> 像`/boot/grub/grub.cfg`、`/boot/refind_linux.conf`这些启动管理器的配置文件都会写清楚要挂载的映像。
+
+出于篇幅与安全性考虑，这里就不对 efibootmgr 作进一步介绍了。  
+创建完启动项后可以重启、进入主板启动选项（想想你怎么用 U 盘装系统的）、选中你刚刚建好的启动项回车。若一切无误，你应该能直接看到 Linux 内核日志刷屏，然后便是用户登录界面。
+:::
