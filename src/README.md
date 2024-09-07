@@ -8,7 +8,7 @@ heroText: 氯离子实验室
 heroFullScreen: true
 # using public anime wallpaper API
 bgImage: https://www.loliapi.com/acg/
-tagline: 不妨就把它当作是咱的「创意工坊」吧。欢迎你的来访。
+tagline: 不妨就把它当作咱的「创意工坊」吧。欢迎你的来访。
 # projects:
   # - icon: project | book | link | article | friend | customize
   #   name: 红警 2 触发组件逻辑原理
