@@ -3,7 +3,7 @@ home: true
 layout: BlogHome
 icon: home
 title: 主页
-heroImage: /assets/images/beibei.webp
+heroImage: /assets/images/avatar.webp
 heroText: 氯离子实验室
 heroFullScreen: true
 # using public anime wallpaper API

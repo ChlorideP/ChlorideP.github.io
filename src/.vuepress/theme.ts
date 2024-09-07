@@ -13,7 +13,7 @@ export default hopeTheme(
 
     iconAssets: "fontawesome-with-brands",
 
-    logo: "/assets/images/beibei.webp",
+    logo: "/assets/images/avatar.webp",
 
     repo: "ChlorideP/chloridep.github.io",
 
