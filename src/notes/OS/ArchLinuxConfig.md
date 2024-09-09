@@ -133,12 +133,9 @@ funWithParam 1 2 3 4 5 6 7 8 9 34 73
 
 ## 运行 Windows 程序
 
-除了最简单的虚拟机大法之外，你也许听说过 Wine。当然 Steam 则采用 Proton。它们都是为了在 Linux 系统里「兼容」WinAPI 而生的兼容层。  
-而说起 Wine，那确实能讲好几个夜晚，我也差不多摸索了半个月。毕竟我是搞红警 2 mod 出身的嘛，
-姑且也为[游玩红警 2 模组「星辰之光」](../RA2/ExtremeStarryInLinux.md)的玩家写了一篇 Bottles 教程，这里就不再大篇幅去扯淡了，仅供参考。
+参见笔记[在 Linux 中游玩「星辰之光」](../RA2/ExtremeStarryInLinux.md)。当然也可以依照律回指南推荐的，考虑用 Bottles。这里不再赘述。
 
-原生`wine`^multilib^的配置建议参考[官方英文 Wiki](https://wiki.archlinux.org/title/wine)
-和[中文社区的翻译](https://wiki.archlinuxcn.org/wiki/Wine)。
+对于原生 wine^multilib^ 更详尽的介绍建议查阅[官方英文 Wiki](https://wiki.archlinux.org/title/wine) 和[中文社区的翻译](https://wiki.archlinuxcn.org/wiki/Wine)。
 
 ## 系统美化
 
