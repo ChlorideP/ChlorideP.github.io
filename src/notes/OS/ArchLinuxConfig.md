@@ -94,7 +94,7 @@ Shell 的函数是这么写的：
 function func-name() { }
 ```
 函数适合「批处理」这种需要执行多条命令的场景。~~当然你也可以写`if`判断和`for`循环。但这不是重点。~~
-目前来说，我只为了启动 OpenSeeFace 面捕 ~~（唉，底边皮套壬）~~ 写了个函数：
+目前来说，我只为了启动 OpenSeeFace 面捕 ~~（唉，皮套壬）~~ 写了个函数：
 
 > 关于面捕和 Live2D 皮套，参见
 > [Running VTS on Linux - Vtube Studio Wiki](https://github.com/DenchiSoft/VTubeStudio/wiki/Running-VTS-on-Linux)
@@ -114,28 +114,45 @@ function start-facetrack() {
 }
 ```
 
-::: info 传参
-参考资料：[菜鸟教程](https://www.runoob.com/linux/linux-shell-func.html)
+更多细节（比如说如何传参），还请移步[菜鸟教程](https://www.runoob.com/linux/linux-shell-func.html)。
 
-简单来说，Shell 的传参通过「位序」确定：
+### iii. 脚本
+正如 Windows 能自动识别`%WinDir%`里面的程序和脚本，并在`cmd`中轻易地调用那样，你也可以把一些脚本置于（或者软链接到）`bin`目录中：
+- 对所有用户：`/usr/local/bin`
+- 对当前用户：`~/.local/bin`
+
+> [!warning]
+> 不建议直接塞进`/usr/bin`。若是哪天有个软件包跟你的脚本重名了，而你恰需要安装它，这时候 pacman 就「用户，不可战胜的」咯（指文件占用 Fatal Error）。
+
+然后简单说说脚本本身。脚本本身需要赋予「可执行」权限（软链接则对指向的原件赋权），并且在文件开头指定是用什么解释器运行的：
 ```bash
-#!/bin/bash
-# 取自菜鸟教程，有删减。完整版自行跳转。
-
-funWithParam(){
-  echo "第一个参数为 $1 !"
-  echo "第十个参数为 ${10} !"
-  echo "参数总数有 $# 个!"
-}
-funWithParam 1 2 3 4 5 6 7 8 9 34 73
+#!/usr/bin/bash
 ```
-:::
+```python
+#!/home/chloridep/openseeface/.venv/bin/python
+```
+然后便可以在终端调用这些脚本了。
+```bash
+$ where facetracker
+/home/chloridep/.local/bin/facetracker
+$ facetracker -W 1280 -H 720 --discard-after 0 --scan-every 0 --no-3d-adapt 1 --max-feature-updates 900 -c 0
+```
 
 ## 运行 Windows 程序
 
-参见笔记[在 Linux 中游玩「星辰之光」](../RA2/ExtremeStarryInLinux.md)。当然也可以依照律回指南推荐的，考虑用 Bottles。这里不再赘述。
+总的来说，两种办法：虚拟机，或是 Wine、Proton 等兼容层。~~当然，直接物理装 Windows 也行。~~
 
-对于原生 wine^multilib^ 更详尽的介绍建议查阅[官方英文 Wiki](https://wiki.archlinux.org/title/wine) 和[中文社区的翻译](https://wiki.archlinuxcn.org/wiki/Wine)。
+如果你想玩虚拟机，可以移步 [winapps](https://github.com/winapps-org/winapps) 项目。我这边因为 RDP 连接失败，只好放弃。当然传统的 VMWare、VirtualBox 也是不错的选择。  
+而若是想折腾 Wine，可以参见我另一篇笔记：[在 Linux 中游玩「星辰之光」](../RA2/ExtremeStarryInLinux.md)。当然也可以依照律回指南推荐的，考虑用 Bottles。这里不再赘述。
+
+> [!note]
+> bottlesdev 官方推荐装 Flatpak 版本的 Bottles。但 Flatpak 软件一般是装在沙盒里运行的，
+> 这意味着需要 Flatseal 等额外措施去暴露一些目录给沙盒里的 wine 容器做数据交换。
+>
+> 此外，沙盒的隔离特性还容易出现「懒加载」的问题。经测试发现，单文件 exe 才可以在「懒加载」情况下直接启动。
+> 但凡需要读同级文件、子文件夹的，都需要在 Bottle 里添加快捷方式，并在快捷方式的设置里手动指明工作目录。
+>
+> 弃用后偶然发现 archlinuxcn 源里也有 Bottles，至于它是否沙盒运行，以及上述问题能否得到解决，还有赖进一步测试。
 
 ## 系统美化
 

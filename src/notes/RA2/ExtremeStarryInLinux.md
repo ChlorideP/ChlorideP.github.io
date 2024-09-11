@@ -29,6 +29,8 @@ tag:
 之前依照律回指南的推荐折腾了下 Bottles。但遗憾的是，由于 Flatpak 沙箱等因素，它似乎只能运行「星辰之光」，像原版红红、心灵终结 3.3.6 均会在读条时 Fatal Error 弹窗。  
 有一天我在玩《多娜多娜》的时候发现需要解决字符编码问题（存档找不到），遂折腾起了原生 Wine。在一番尝试之下，终于得到了更普适红警 2 的原生 Wine 运行方案。
 
+> 对于原生 wine 更详尽的介绍建议查阅[官方英文 Wiki](https://wiki.archlinux.org/title/wine) 和[中文社区的翻译](https://wiki.archlinuxcn.org/wiki/Wine)。
+
 我这里安装了`wine`^multilib^和`winetricks`^multilib^两个软件包。前者提供最基本的兼容环境，后者则为环境的搭建、管理提供一定辅助。
 ```bash
 sudo pacman -S wine winetricks
