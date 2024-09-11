@@ -1,13 +1,13 @@
 {
   "name": "chloridep-blog",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "ChlorideP Personal Blogs",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "docs:build": "vuepress-vite build src",
-    "docs:clean-dev": "vuepress-vite dev src --clean-cache",
-    "docs:dev": "vuepress-vite dev src",
+    "docs:build": "vuepress-vite build docs",
+    "docs:clean-dev": "vuepress-vite dev docs --clean-cache",
+    "docs:dev": "vuepress-vite dev docs",
     "docs:update-package": "pnpm dlx vp-update"
   },
   "devDependencies": {

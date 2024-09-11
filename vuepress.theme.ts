@@ -1,6 +1,6 @@
 import { hopeTheme } from "vuepress-theme-hope";
-import navbar from "./navbar.js";
-import sidebar from "./sidebar.js";
+import navbar from "./src/navbar.js";
+import sidebar from "./src/sidebar.js";
 
 export default hopeTheme(
   {
@@ -17,7 +17,7 @@ export default hopeTheme(
 
     repo: "ChlorideP/chloridep.github.io",
 
-    docsDir: "src",
+    docsDir: "docs",
 
     // 导航栏
     navbar,

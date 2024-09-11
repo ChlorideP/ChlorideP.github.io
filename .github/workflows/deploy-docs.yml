@@ -8,6 +8,7 @@ on:
     paths:
       - .github/**
       - src/**
+      - docs/**
       - public/**
       - package.json
 
