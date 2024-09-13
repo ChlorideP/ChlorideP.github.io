@@ -11,6 +11,7 @@ on:
       - docs/**
       - public/**
       - package.json
+      - vuepress.*.ts
 
 permissions:
   contents: write
