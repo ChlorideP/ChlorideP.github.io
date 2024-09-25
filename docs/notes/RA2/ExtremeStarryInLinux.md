@@ -8,6 +8,11 @@ tag:
 
 # 在 Linux 中游玩「星辰之光」
 
+> [!warning]
+> Wine 最新版本（v9.18）疑似干废 DDraw 渲染，本文所述原生 Wine 暂时不可用。  
+> 主包临时使用`downgrade`^archlinuxcn^降级回 9.17 版本，并重建现有 wine 容器方可继续游玩。  
+> 可能还是 Bottles 或者换用 Proton 更靠谱吧。
+
 ## 前言
 
 这篇笔记算是我这阵子折腾 Wine 兼容层的一些小结。
