@@ -50,6 +50,11 @@ main.friends.round-avatar {
     img.vp-project-image {
       border-radius: 9999px;
     }
+    width: calc(50% - 40px);
+
+    @media (max-width: 959px) {
+      width: 100%
+    }
   }
 }
 </style>
