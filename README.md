@@ -1,12 +1,12 @@
 ## 氯喵博客：「氯离子实验室」门户网站
-基本上放一些能成篇的探索发现，或者说「实验」。
 
-若只是一些初窥门径的 ~~摸索~~ ~~闭门造车~~ 瞎折腾，本身并没有什么能拿出来说道说道的「探索」，我便用“实验笔记”去记录它；  
-而若是能用我大学毕业论文的框架结构去水一篇「结论」~~或者说实验报告~~ 的话，我就考虑“归档” ~~裱~~ 起来。
+<p align="center">
+    <a href="https://github.com/ChlorideP/ChlorideP.github.io/tree/main/LICENSE-MIT"><img src="https://img.shields.io/badge/license-MIT-blue" alt="license - MIT"></a>
+    <a href="https://github.com/Meloland/melobot/tree/main/LICENSE-CC"><img src="https://img.shields.io/badge/license-CC--BY--NC--SA--4.0-lightgrey" alt="license - CC-BY-NC-SA-4.0"></a>
+</p>
 
-~~不过反正……就我这个人吧，也没什么才能；大多数的探索也不过是小打小闹、不成气候。标榜「实验室」不说不要脸吧，也简直是在「车大炮」（吹牛皮）。~~  
-~~之所以搞个 Chloride Lab，名之“实验室”，还是想掩饰自己没什么人缘、社交也做不到，融不进现实社会；只好闭门造车，挂个名假装有一撮「拥趸」一起“探索”罢了。~~
-
-> 主包最大的长性，便是「自己骂自己」。—— Kariko Lin
+本博客的前端实现采用 MIT 协议；对于站点中用「结论归档」和「实验笔记」收纳的文章，则采用 CC BY-NC-SA 4.0 协议。
 
 **欢迎就本博客上传的「笔记」「结论」中的错误、不足之处提出 Issue 批评指正；或者看不顺眼了，丢个 Pull Request，也是极好的。**
+
+至于我这个人……或者说「实验室」？大抵没什么可介绍的罢。
