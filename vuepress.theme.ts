@@ -4,7 +4,7 @@ import sidebar from "./src/sidebar.js";
 
 export default hopeTheme(
   {
-    hostname: "https://chloridep.github.io",
+    hostname: "https://chloridep.github.io/blogs",
 
     author: {
       name: "Kariko Lin",
@@ -15,7 +15,7 @@ export default hopeTheme(
 
     logo: "/assets/images/avatar.webp",
 
-    repo: "ChlorideP/chloridep.github.io",
+    repo: "ChlorideP/blogs",
 
     docsDir: "docs",
 
